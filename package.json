@@ -1,7 +1,7 @@
 {
   "name": "repo-to-text",
-  "version": "1.0.0",
-  "description": "CLI tool to dump repository file contents into a single annotated text file",
+  "version": "0.0.1",
+  "description": "CLI tool to dump repository file contents into a single annotated text file, with globbing and watch mode",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
