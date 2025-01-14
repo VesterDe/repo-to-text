@@ -16,12 +16,12 @@ npm install repo-to-text
 
 Basic usage:
 ```bash
-repo-to-text
+npx repo-to-text
 ```
 
 Watch mode:
 ```bash
-repo-to-text --watch
+npx repo-to-text --watch
 ```
 
 This will create a `repo-contents.txt` file with all repository contents and update it automatically when files change.
