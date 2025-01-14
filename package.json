@@ -38,12 +38,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/repo-to-text-watcher.git"
+    "url": "git+https://github.com/VesterDe/repo-to-text.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/repo-to-text-watcher/issues"
+    "url": "https://github.com/VesterDe/repo-to-text/issues"
   },
-  "homepage": "https://github.com/yourusername/repo-to-text-watcher#readme",
+  "homepage": "https://github.com/VesterDe/repo-to-text#readme",
   "engines": {
     "node": ">=16"
   },
