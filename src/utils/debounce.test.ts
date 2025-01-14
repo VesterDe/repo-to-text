@@ -1,5 +1,5 @@
 import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { debounce } from './index.js';
+import { debounce } from './debounce.js';
 
 describe('debounce', () => {
   beforeEach(() => {

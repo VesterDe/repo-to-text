@@ -1,8 +1,7 @@
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import type { Stats } from 'fs';
-import { FileHandler, ConfigLoader, DEFAULT_CONFIG, FileSystem } from './index.js';
-
-type MockFunction<T extends (...args: any[]) => any> = jest.MockedFunction<T>;
+import { ConfigLoader, DEFAULT_CONFIG } from './ConfigLoader.js';
+import { FileHandler } from './FileHandler.js';
+import type { FileSystem } from '../types.js';
 
 const mockFs = {
   readFileSync: jest.fn().mockReturnValue(''),
@@ -11,56 +10,17 @@ const mockFs = {
   statSync: jest.fn()
 } as jest.Mocked<FileSystem>;
 
-describe('FileHandler', () => {
-  let fileHandler: FileHandler;
-
-  beforeEach(() => {
-    fileHandler = new FileHandler(mockFs);
-    jest.clearAllMocks();
-  });
-
-  test('should read file', () => {
-    mockFs.readFileSync.mockReturnValue('file content');
-    expect(fileHandler.readFile('test.txt')).toBe('file content');
-    expect(mockFs.readFileSync).toHaveBeenCalledWith('test.txt', 'utf8');
-  });
-
-  test('should write file', () => {
-    fileHandler.writeFile('test.txt', 'content');
-    expect(mockFs.writeFileSync).toHaveBeenCalledWith('test.txt', 'content');
-  });
-
-  test('should check if file exists', () => {
-    mockFs.existsSync.mockReturnValue(true);
-    expect(fileHandler.exists('test.txt')).toBe(true);
-  });
-
-  test('should check if path is file', () => {
-    mockFs.statSync.mockReturnValue({ isFile: () => true } as Stats);
-    expect(fileHandler.isFile('test.txt')).toBe(true);
-  });
-
-  test('should handle directory check', () => {
-    mockFs.statSync.mockImplementation(() => {
-      const error: NodeJS.ErrnoException = new Error();
-      error.code = 'EISDIR';
-      throw error;
-    });
-    expect(fileHandler.isFile('dir')).toBe(false);
-  });
-});
-
 describe('ConfigLoader', () => {
   let configLoader: ConfigLoader;
   let mockFileHandler: FileHandler;
-  let readFileMock: MockFunction<FileHandler['readFile']>;
-  let existsMock: MockFunction<FileHandler['exists']>;
+  let readFileMock: jest.MockedFunction<FileHandler['readFile']>;
+  let existsMock: jest.MockedFunction<FileHandler['exists']>;
 
   beforeEach(() => {
     mockFileHandler = new FileHandler(mockFs);
     configLoader = new ConfigLoader(mockFileHandler);
-    readFileMock = jest.fn() as MockFunction<FileHandler['readFile']>;
-    existsMock = jest.fn() as MockFunction<FileHandler['exists']>;
+    readFileMock = jest.fn() as jest.MockedFunction<FileHandler['readFile']>;
+    existsMock = jest.fn() as jest.MockedFunction<FileHandler['exists']>;
     jest.spyOn(mockFileHandler, 'readFile').mockImplementation(readFileMock);
     jest.spyOn(mockFileHandler, 'exists').mockImplementation(existsMock);
   });
