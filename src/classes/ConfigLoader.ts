@@ -24,29 +24,47 @@ export class ConfigLoader {
   constructor(private fileHandler: FileHandler) {}
 
   loadConfig(configPath?: string): Config {
-    // First try the provided config path
+    let config = { ...DEFAULT_CONFIG };
+    
     if (configPath && this.fileHandler.exists(configPath)) {
       try {
         const configContent = this.fileHandler.readFile(configPath);
-        console.log("configContent", configContent);
-        return { ...DEFAULT_CONFIG, ...JSON.parse(configContent) };
+        const customConfig = JSON.parse(configContent);
+        config = this.mergeConfig(config, customConfig);
       } catch (error) {
-        throw new Error(`Failed to load config file: ${(error as Error).message}`);
+        console.warn(`Invalid config at ${configPath}, falling back to defaults: ${(error as Error).message}`);
       }
+      return config;
     }
 
-    // Then try the default config file
     const defaultConfigPath = join(process.cwd(), 'repo-to-text.json');
     if (this.fileHandler.exists(defaultConfigPath)) {
       try {
         const configContent = this.fileHandler.readFile(defaultConfigPath);
-        return { ...DEFAULT_CONFIG, ...JSON.parse(configContent) };
+        const defaultFileConfig = JSON.parse(configContent);
+        config = this.mergeConfig(config, defaultFileConfig);
       } catch (error) {
-        throw new Error(`Failed to load default config file: ${(error as Error).message}`);
+        console.warn(`Invalid default config at ${defaultConfigPath}, using built-in defaults: ${(error as Error).message}`);
       }
     }
 
-    // Fall back to default config
-    return DEFAULT_CONFIG;
+    return config;
+  }
+
+  private mergeConfig(base: Config, override: Partial<Config>): Config {
+    const merged = {
+      ...base,
+      ...override,
+      include: override.include !== undefined ? override.include : base.include,
+      exclude: [...base.exclude],
+      output: { ...base.output, ...override.output },
+      watch: { ...base.watch, ...override.watch }
+    };
+
+    if (override.exclude) {
+      merged.exclude.push(...override.exclude);
+    }
+
+    return merged;
   }
 } 

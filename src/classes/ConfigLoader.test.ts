@@ -45,7 +45,7 @@ describe('ConfigLoader', () => {
     
     const config = configLoader.loadConfig();
     expect(config.include).toEqual(DEFAULT_CONFIG.include);
-    expect(config.exclude).toEqual(['dist/**']);
+    expect(config.exclude).toEqual(expect.arrayContaining([...DEFAULT_CONFIG.exclude]));
   });
 
   test('should prioritize provided config over default config', () => {
@@ -64,17 +64,33 @@ describe('ConfigLoader', () => {
     expect(config.include).toEqual(['src/**/*.ts']);
   });
 
-  test('should throw error on invalid config in provided path', () => {
+  test('should fall back to defaults with warning on invalid custom config', () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     existsMock.mockReturnValue(true);
     readFileMock.mockReturnValue('invalid json');
     
-    expect(() => configLoader.loadConfig('custom-config.json')).toThrow('Failed to load config file');
+    const config = configLoader.loadConfig('custom-config.json');
+    expect(config).toEqual(DEFAULT_CONFIG);
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid config at custom-config.json'));
+    
+    consoleSpy.mockRestore();
   });
 
-  test('should throw error on invalid default config', () => {
-    existsMock.mockImplementation((path) => path === 'repo-to-text.json');
-    readFileMock.mockReturnValue('invalid json');
+  test('should merge excludes but override includes when provided in config', () => {
+    existsMock.mockReturnValue(true);
+    readFileMock.mockReturnValue(JSON.stringify({
+      include: ['src/**/*.ts'],
+      exclude: ['dist/**', 'coverage/**']
+    }));
     
-    expect(() => configLoader.loadConfig()).toThrow('Failed to load default config file');
+    const config = configLoader.loadConfig('custom-config.json');
+    
+    expect(config.include).toEqual(['src/**/*.ts']);
+    
+    expect(config.exclude).toEqual([
+      ...DEFAULT_CONFIG.exclude,
+      'dist/**',
+      'coverage/**'
+    ]);
   });
 }); 
