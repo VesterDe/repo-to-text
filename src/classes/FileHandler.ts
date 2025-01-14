@@ -1,11 +1,12 @@
+import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
 import type { FileSystem } from '../types.js';
 
 export class FileHandler {
   constructor(private fs: FileSystem = {
-    readFileSync: (path, options) => require('fs').readFileSync(path, options),
-    writeFileSync: (path, content) => require('fs').writeFileSync(path, content),
-    existsSync: (path) => require('fs').existsSync(path),
-    statSync: (path) => require('fs').statSync(path)
+    readFileSync: (path, options) => readFileSync(path, options),
+    writeFileSync: (path, content) => writeFileSync(path, content),
+    existsSync: (path) => existsSync(path),
+    statSync: (path) => statSync(path)
   }) {}
 
   readFile(path: string): string {
