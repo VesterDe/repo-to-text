@@ -1,0 +1,7 @@
+node_modules
+dist
+repo-contents.txt
+coverage
+.DS_Store
+*.log
+.env
