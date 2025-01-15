@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { FileHandler } from './FileHandler.js';
 
 export class ContentGenerator {
@@ -18,7 +17,7 @@ export class ContentGenerator {
         output += content;
         output += '\n';
       } catch (error) {
-        console.warn(chalk.yellow(`Warning: Could not read file ${file}: ${(error as Error).message}`));
+        console.warn(`Warning: Could not read file ${file}: ${(error as Error).message}`);
       }
     }
 

@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import chokidar, { FSWatcher } from 'chokidar';
 import type { Options } from '../types.js';
 import { TextDumper } from './TextDumper.js';
@@ -17,8 +16,8 @@ export class Watcher {
     const debounceMs = config.watch?.debounceMs || DEFAULT_CONFIG.watch.debounceMs;
 
     await this.textDumper.generateTextDump(options);
-    console.log(chalk.green(`✨ Initial content dumped to ${outputPath}`));
-    console.log(chalk.gray(`Debounce set to ${debounceMs}ms`));
+    console.log(`✨ Initial content dumped to ${outputPath}`);
+    console.log(`Debounce set to ${debounceMs}ms`);
 
     const watcher = this.chokidarImpl.watch(config.include, {
       ignored: [
@@ -34,14 +33,14 @@ export class Watcher {
     const debouncedUpdate = debounce(async () => {
       try {
         await this.textDumper.generateTextDump(options);
-        console.log(chalk.green(`✨ Updated ${outputPath}`));
+        console.log(`✨ Updated ${outputPath}`);
       } catch (error) {
-        console.error(chalk.red(`Error updating on change: ${(error as Error).message}`));
+        console.error(`Error updating on change: ${(error as Error).message}`);
       }
     }, debounceMs);
 
     const handleChange = (path: string) => {
-      console.log(chalk.blue(`📝 File changed: ${path}`));
+      console.log(`📝 File changed: ${path}`);
       debouncedUpdate();
     };
 
@@ -50,7 +49,7 @@ export class Watcher {
       .on('change', handleChange)
       .on('unlink', handleChange)
       .on('error', error => {
-        console.error(chalk.red(`Watcher error: ${error}`));
+        console.error(`Watcher error: ${error}`);
       });
 
     return watcher;

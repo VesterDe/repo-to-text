@@ -4,7 +4,6 @@ import { program } from 'commander';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import chalk from 'chalk';
 import { generateTextDump, watchRepository } from './index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,14 +23,14 @@ const options = program.opts();
 
 try {
   if (options.watch) {
-    console.log(chalk.blue('Watching repository for changes...'));
-    console.log(chalk.gray('Press Ctrl+C to stop'));
+    console.log('Watching repository for changes...');
+    console.log('Press Ctrl+C to stop');
     await watchRepository(options);
   } else {
     const outputPath = await generateTextDump(options);
-    console.log(chalk.green(`✨ Repository contents have been dumped to ${outputPath}`));
+    console.log(`✨ Repository contents have been dumped to ${outputPath}`);
   }
 } catch (error) {
-  console.error(chalk.red('Error:'), (error as Error).message);
+  console.error('Error:', (error as Error).message);
   process.exit(1);
 } 
