@@ -10,7 +10,6 @@ import { generateTextDump, watchRepository } from './index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Read package.json from the built location (dist directory's parent)
 const packageJson = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
 
 program
