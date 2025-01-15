@@ -9,7 +9,7 @@ Inspired by [https://github.com/kirill-markin/repo-to-text](https://github.com/k
 ## Installation
 
 ```bash
-npm install repo-to-text
+npm install -D repo-to-text
 ```
 
 ## Usage
