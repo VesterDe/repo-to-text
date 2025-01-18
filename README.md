@@ -59,6 +59,9 @@ Example configuration file (`repo-to-text.json`):
   },
   "watch": {
     "debounceMs": 300
+  },
+  "tree": {
+    "enabled": true
   }
 }
 ```
