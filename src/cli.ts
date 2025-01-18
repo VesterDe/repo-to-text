@@ -20,13 +20,16 @@ Options:
   -c, --config <path>   Path to config file
   -o, --output <path>   Output file path
   -w, --watch          Watch for file changes and update output file
+  -t, --no-tree       Disable directory tree structure at the top of the output (enabled by default)
   -v, --version        Show version number
   -h, --help           Show this help message
 `);
 }
 
 function parseArgs(args: string[]) {
-  const options: { config?: string; output?: string; watch?: boolean } = {};
+  const options: { config?: string; output?: string; watch?: boolean; includeTree?: boolean } = {
+    includeTree: true
+  };
   
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -35,17 +38,11 @@ function parseArgs(args: string[]) {
     switch (arg) {
       case '-c':
       case '--config':
-        if (!nextArg || nextArg.startsWith('-')) {
-          throw new Error('Config path is required');
-        }
         options.config = nextArg;
         i++;
         break;
       case '-o':
       case '--output':
-        if (!nextArg || nextArg.startsWith('-')) {
-          throw new Error('Output path is required');
-        }
         options.output = nextArg;
         i++;
         break;
@@ -53,9 +50,13 @@ function parseArgs(args: string[]) {
       case '--watch':
         options.watch = true;
         break;
+      case '-t':
+      case '--no-tree':
+        options.includeTree = false;
+        break;
       case '-v':
       case '--version':
-        console.log(`v${packageJson.version}`);
+        console.log(packageJson.version);
         process.exit(0);
       case '-h':
       case '--help':
@@ -63,7 +64,8 @@ function parseArgs(args: string[]) {
         process.exit(0);
       default:
         if (arg.startsWith('-')) {
-          throw new Error(`Unknown option: ${arg}`);
+          console.error(`Unknown option: ${arg}`);
+          process.exit(1);
         }
     }
   }

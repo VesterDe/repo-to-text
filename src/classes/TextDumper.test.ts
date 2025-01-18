@@ -75,4 +75,28 @@ describe('TextDumper', () => {
     expect(generateContentMock).toHaveBeenCalled();
     expect(writeFileMock).toHaveBeenCalledWith('output.txt', 'content');
   });
+
+  test('should include tree structure when includeTree option is true', async () => {
+    const options = { output: 'output.txt', includeTree: true };
+    getFilesMock.mockResolvedValueOnce(['file1.js', 'src/file2.js']);
+    generateContentMock.mockReturnValueOnce('file contents');
+    
+    const outputPath = await dumper.generateTextDump(options);
+
+    expect(outputPath).toBe('output.txt');
+    expect(writeFileMock).toHaveBeenCalledWith('output.txt', expect.stringContaining('Directory Tree:'));
+    expect(writeFileMock).toHaveBeenCalledWith('output.txt', expect.stringContaining('file contents'));
+  });
+
+  test('should not include tree structure when includeTree option is false', async () => {
+    const options = { output: 'output.txt', includeTree: false };
+    getFilesMock.mockResolvedValueOnce(['file1.js', 'src/file2.js']);
+    generateContentMock.mockReturnValueOnce('file contents');
+    
+    const outputPath = await dumper.generateTextDump(options);
+
+    expect(outputPath).toBe('output.txt');
+    expect(writeFileMock).toHaveBeenCalledWith('output.txt', 'file contents');
+    expect(writeFileMock).not.toHaveBeenCalledWith('output.txt', expect.stringContaining('Directory Tree:'));
+  });
 }); 

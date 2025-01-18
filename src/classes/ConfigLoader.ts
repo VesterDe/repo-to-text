@@ -17,6 +17,9 @@ export const DEFAULT_CONFIG: Config = {
   },
   watch: {
     debounceMs: 300
+  },
+  tree: {
+    enabled: true
   }
 };
 

@@ -31,6 +31,7 @@ This will create a `repo-contents.txt` file with all repository contents and upd
 - `-o, --output <path>`: Specify output file path (default: "repo-contents.txt")
 - `-c, --config <path>`: Specify a custom config file path
 - `-w, --watch`: Watch for file changes and update output file automatically
+- `-t, --no-tree`: Disable directory tree structure at the top of the output (enabled by default)
 - `-v, --version`: Output the version number
 - `-h, --help`: Display help information
 
@@ -67,6 +68,7 @@ The configuration supports:
 - `exclude`: Array of glob patterns for files to exclude
 - `output.path`: Default output file path (can be overridden by CLI option)
 - `watch.debounceMs`: Debounce time in milliseconds for watch mode (default: 300ms)
+- `tree.enabled`: Whether to include directory tree structure at the top of the output (default: true)
 
 Default behavior:
 - Excludes files in `node_modules/`
@@ -74,6 +76,7 @@ Default behavior:
 - Includes all files except those explicitly excluded
 - Automatically excludes the output file to prevent recursive scanning
 - Default output path is `repo-contents.txt`
+- Includes directory tree structure at the top of the output
 - In watch mode:
   - Monitors files matching the include patterns
   - Updates output file on changes after debounce period

@@ -10,6 +10,9 @@ export interface Config {
   watch: {
     debounceMs: number;
   };
+  tree?: {
+    enabled: boolean;
+  };
 }
 
 export interface FileSystem {
@@ -22,6 +25,7 @@ export interface FileSystem {
 export interface Options {
   config?: string;
   output?: string;
+  includeTree?: boolean;
 }
 
 export type GlobOptions = {
