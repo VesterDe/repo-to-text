@@ -1,4 +1,4 @@
-# repo-to-text
+# repo-to-text-watcher
 
 For when you want to throw your entire repo at an LLM, but it isn't public so you can't use public web app solutions.
 
