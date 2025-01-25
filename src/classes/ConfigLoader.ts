@@ -6,11 +6,12 @@ export const DEFAULT_CONFIG: Config = {
   include: ['**/*'],
   exclude: [
     'node_modules/**',
-    '.git/**',
     'package-lock.json',
     'yarn.lock',
     'pnpm-lock.yaml',
     'bun.lockb',
+    '.*/**',
+    '.*'
   ],
   output: {
     path: 'repo-contents.txt'
