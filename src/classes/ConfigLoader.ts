@@ -5,15 +5,67 @@ import { FileHandler } from './FileHandler.js';
 export const DEFAULT_CONFIG: Config = {
   include: ['**/*'],
   exclude: [
+    // Dependencies and build outputs
     'node_modules/**',
-    '.git/**',
-    '.*/**',
-    '.*/**',
     'dist/**',
+    'build/**',
+    'out/**',
+    'target/**',
+    'bin/**',
+    'lib/**',
+    
+    // Package manager files
     'package-lock.json',
     'yarn.lock',
     'pnpm-lock.yaml',
     'bun.lockb',
+    
+    // Version control
+    '.git/**',
+    '.svn/**',
+    '.hg/**',
+    
+    // Cache and temporary files
+    '.cache/**',
+    '.tmp/**',
+    'tmp/**',
+    '.temp/**',
+    'temp/**',
+    
+    // Test coverage and reports
+    'coverage/**',
+    '.nyc_output/**',
+    'junit.xml',
+    
+    // IDE and editor files
+    '.idea/**',
+    '.vscode/**',
+    '.vs/**',
+    '*.sublime-*',
+    '*.swp',
+    '*.swo',
+    
+    // Logs
+    'logs/**',
+    '*.log',
+    'npm-debug.log*',
+    'yarn-debug.log*',
+    'yarn-error.log*',
+    
+    // Environment and secrets
+    '.env*',
+    '.env.local',
+    '.env.*.local',
+    '*.pem',
+    '*.key',
+    '*.cert',
+    
+    // Documentation builds
+    'docs/_build/**',
+    'docs/_site/**',
+    'site/**',
+    '_site/**',
+    
     // Image files
     '**/*.jpg',
     '**/*.jpeg',
@@ -24,7 +76,41 @@ export const DEFAULT_CONFIG: Config = {
     '**/*.webp',
     '**/*.bmp',
     '**/*.tiff',
-    '**/*.tif'
+    '**/*.tif',
+    
+    // Other media files
+    '**/*.mp3',
+    '**/*.mp4',
+    '**/*.wav',
+    '**/*.avi',
+    '**/*.mov',
+    '**/*.mkv',
+    '**/*.flv',
+    '**/*.m4a',
+    '**/*.m4v',
+    '**/*.wmv',
+    '**/*.webm',
+    
+    // Binary and compiled files
+    '**/*.exe',
+    '**/*.dll',
+    '**/*.so',
+    '**/*.dylib',
+    '**/*.bin',
+    '**/*.obj',
+    '**/*.o',
+    '**/*.pyc',
+    '**/*.class',
+    
+    // Archives
+    '**/*.zip',
+    '**/*.tar',
+    '**/*.gz',
+    '**/*.7z',
+    '**/*.rar',
+    '**/*.jar',
+    '**/*.war',
+    '**/*.ear'
   ],
   output: {
     path: 'repo-contents.txt'
