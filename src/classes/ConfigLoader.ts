@@ -6,12 +6,25 @@ export const DEFAULT_CONFIG: Config = {
   include: ['**/*'],
   exclude: [
     'node_modules/**',
+    '.git/**',
+    '.*/**',
+    '.*/**',
+    'dist/**',
     'package-lock.json',
     'yarn.lock',
     'pnpm-lock.yaml',
     'bun.lockb',
-    '.*/**',
-    '.*'
+    // Image files
+    '**/*.jpg',
+    '**/*.jpeg',
+    '**/*.png',
+    '**/*.gif',
+    '**/*.svg',
+    '**/*.ico',
+    '**/*.webp',
+    '**/*.bmp',
+    '**/*.tiff',
+    '**/*.tif'
   ],
   output: {
     path: 'repo-contents.txt'
