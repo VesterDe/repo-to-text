@@ -85,6 +85,21 @@ Default behavior:
   - Updates output file on changes after debounce period
   - Default debounce of 300ms to prevent rapid updates
 
+Default exclusions by category:
+- **Dependencies and Build Outputs**: `node_modules/**`, `dist/**`, `build/**`, `out/**`, `target/**`, `bin/**`, `lib/**`
+- **Package Manager Files**: `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `bun.lockb`
+- **Version Control**: `.git/**`, `.svn/**`, `.hg/**`
+- **Cache and Temporary Files**: `.cache/**`, `.tmp/**`, `tmp/**`, `.temp/**`, `temp/**`
+- **Test Coverage and Reports**: `coverage/**`, `.nyc_output/**`, `junit.xml`
+- **IDE and Editor Files**: `.idea/**`, `.vscode/**`, `.vs/**`, `*.sublime-*`, `*.swp`, `*.swo`
+- **Logs**: `logs/**`, `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`
+- **Environment and Secrets**: `.env*`, `.env.local`, `.env.*.local`, `*.pem`, `*.key`, `*.cert`
+- **Documentation Builds**: `docs/_build/**`, `docs/_site/**`, `site/**`, `_site/**`
+- **Images**: `**/*.{jpg,jpeg,png,gif,svg,ico,webp,bmp,tiff,tif}`
+- **Other Media**: `**/*.{mp3,mp4,wav,avi,mov,mkv,flv,m4a,m4v,wmv,webm}`
+- **Binary and Compiled Files**: `**/*.{exe,dll,so,dylib,bin,obj,o,pyc,class}`
+- **Archives**: `**/*.{zip,tar,gz,7z,rar,jar,war,ear}`
+
 Note: CLI options take precedence over configuration file settings.
 
 ## Contributing
