@@ -1,6 +1,6 @@
 {
   "name": "quick-repo-to-text",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "CLI tool to quickly dump a folder into a single text file, with sensible defaults, or advanced config",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
