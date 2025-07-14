@@ -1,27 +1,35 @@
 # repo-to-text-watcher
 
-For when you want to throw your entire repo at an LLM, but it isn't public so you can't use public web app solutions.
+For when you want to throw your entire repo, or just a folder, at an LLM, but it isn't public so you can't use public web app solutions.
 
 This CLI tool dumps the contents of repository files into a single annotated text file. It respects `.gitignore` patterns and allows custom configuration for file inclusion/exclusion. Also has a watch mode.
+
+If you're in a hurry, just use
+
+```bash
+npx repo-to-text-watcher .
+```
+
+In any folder and a repo-contents.txt file will appear there.
 
 Inspired by [https://github.com/kirill-markin/repo-to-text](https://github.com/kirill-markin/repo-to-text) and web based solutions.
 
 ## Installation
 
 ```bash
-npm install -D repo-to-text
+npm install -D repo-to-text-watcher
 ```
 
 ## Usage
 
 Basic usage:
 ```bash
-npx repo-to-text
+npx repo-to-text-watcher
 ```
 
 Watch mode:
 ```bash
-npx repo-to-text --watch
+npx repo-to-text-watcher --watch
 ```
 
 This will create a `repo-contents.txt` file with all repository contents and update it automatically when files change.
