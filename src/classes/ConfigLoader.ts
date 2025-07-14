@@ -110,7 +110,12 @@ export const DEFAULT_CONFIG: Config = {
     '**/*.rar',
     '**/*.jar',
     '**/*.war',
-    '**/*.ear'
+    '**/*.ear',
+
+    // OS specific files
+    '**/*.DS_Store',
+    '**/*.Thumbs.db',
+    '**/*.AppleDouble',
   ],
   output: {
     path: 'repo-contents.txt'
