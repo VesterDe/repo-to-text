@@ -1,5 +1,5 @@
 {
-  "name": "quick-repo-to-text",
+  "name": "repo-to-text-watcher",
   "version": "0.1.0",
   "description": "CLI tool to quickly dump a folder into a single text file, with sensible defaults, or advanced config",
   "main": "./dist/index.js",
