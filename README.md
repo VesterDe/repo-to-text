@@ -2,7 +2,7 @@
 
 For when you want to throw your entire repo, or just a folder, at an LLM, but it isn't public so you can't use public web app solutions.
 
-This CLI tool dumps the contents of repository files into a single annotated text file. It respects `.gitignore` patterns and allows custom configuration for file inclusion/exclusion. Also has a watch mode.
+This CLI tool dumps the contents of repository files into a single annotated text file. It respects `.gitignore` patterns and allows custom configuration for file inclusion/exclusion. Also has a watch mode, and an interactive mode, for when you want a very specific bunch of files dumped.
 
 If you're in a hurry, just use
 

@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage",
-    "prepublishOnly": "bun test && bun run build",
+    "prepublishOnly": "bun run test && bun run build",
     "prepare": "bun run build",
     "lint": "tsc --noEmit"
   },
