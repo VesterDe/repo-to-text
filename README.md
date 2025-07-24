@@ -7,7 +7,7 @@ This CLI tool dumps the contents of repository files into a single annotated tex
 If you're in a hurry, just use
 
 ```bash
-npx repo-to-text-watcher .
+bunx repo-to-text-watcher . #or npx
 ```
 
 In any folder and a repo-contents.txt file will appear there.
@@ -17,19 +17,19 @@ Inspired by [https://github.com/kirill-markin/repo-to-text](https://github.com/k
 ## Installation
 
 ```bash
-npm install -D repo-to-text-watcher
+bun install -D repo-to-text-watcher # or npm
 ```
 
 ## Usage
 
 Basic usage:
 ```bash
-npx repo-to-text-watcher
+bunx repo-to-text-watcher # or npx
 ```
 
 Watch mode:
 ```bash
-npx repo-to-text-watcher --watch
+bunx repo-to-text-watcher --watch # or npx
 ```
 
 This will create a `repo-contents.txt` file with all repository contents and update it automatically when files change.
@@ -118,7 +118,7 @@ Note: CLI options take precedence over configuration file settings.
 This project uses [Vitest](httpshttps://vitest.dev/) for testing. To run the tests, use the following command:
 
 ```bash
-bun run test
+bun run test # or npm
 ```
 
 ## Contributing
