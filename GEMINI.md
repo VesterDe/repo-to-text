@@ -15,6 +15,7 @@ The tool offers several key features:
 *   **Customizable Configuration**: Users can specify custom rules for including or excluding files using glob patterns.
 *   **Watch Mode**: It can monitor the repository for any file changes and automatically regenerate the output file, ensuring the text dump is always up-to-date.
 *   **Directory Tree Generation**: It can optionally generate a directory tree structure at the beginning of the output file, providing a clear overview of the repository's structure.
+*   **Interactive Mode**: It can be run in an interactive mode, allowing the user to select which files and folders to include in the output.
 
 ## File Structure and Purpose
 
@@ -36,6 +37,8 @@ The project is structured into several classes, each with a distinct responsibil
 
 *   **`Watcher.ts`**: This class implements the watch mode functionality. It uses the `chokidar` library to monitor the files in the repository for changes. When a change is detected, it triggers the `TextDumper` to regenerate the output file. It also includes a debounce mechanism to prevent excessive updates in a short period.
 
+*   **`InteractiveSelector.ts`**: This class is responsible for presenting an interactive interface to the user, allowing them to select which files and folders to include in the output. It uses native `fzf` to work, whihc must be present on the user's system.
+
 ### Entry Points and Types
 
 *   **`src/cli.ts`**: This is the entry point for the command-line interface. It is responsible for parsing the command-line arguments and invoking the appropriate functions to either generate the text dump once or start the watch mode.
@@ -47,3 +50,7 @@ The project is structured into several classes, each with a distinct responsibil
 ### Utilities (`src/utils/`)
 
 *   **`debounce.ts`**: This file contains a utility function for debouncing function calls. This is used in the `Watcher` class to prevent the output file from being regenerated too frequently when multiple file changes occur in rapid succession.
+
+### Testing
+
+The project uses `vitest` for running tests. Tests are located alongside the files they are testing, with a `.test.ts` extension. To run the tests, use the `bun test` command.

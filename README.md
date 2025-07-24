@@ -40,8 +40,11 @@ This will create a `repo-contents.txt` file with all repository contents and upd
 - `-c, --config <path>`: Specify a custom config file path
 - `-w, --watch`: Watch for file changes and update output file automatically
 - `-t, --no-tree`: Disable directory tree structure at the top of the output (enabled by default)
+- `-i, --interactive`: Interactively select files and folders to include
 - `-v, --version`: Output the version number
 - `-h, --help`: Display help information
+
+Interactive mode uses `fzf` under the hood, so if it is not present in your system, the command will gracefully fail.
 
 ### Configuration
 
@@ -109,6 +112,14 @@ Default exclusions by category:
 - **Archives**: `**/*.{zip,tar,gz,7z,rar,jar,war,ear}`
 
 Note: CLI options take precedence over configuration file settings.
+
+## Testing
+
+This project uses [Vitest](httpshttps://vitest.dev/) for testing. To run the tests, use the following command:
+
+```bash
+bun run test
+```
 
 ## Contributing
 
