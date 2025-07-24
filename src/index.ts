@@ -15,13 +15,15 @@ import { RepositoryScanner } from './classes/RepositoryScanner.js';
 import { ContentGenerator } from './classes/ContentGenerator.js';
 import { TextDumper } from './classes/TextDumper.js';
 import { Watcher } from './classes/Watcher.js';
+import { TreeGenerator } from './classes/TreeGenerator.js';
 
 export function createInstances(customDeps: Dependencies = {}) {
   const fileHandler = new FileHandler(customDeps.fs);
   const configLoader = new ConfigLoader(fileHandler);
   const repositoryScanner = new RepositoryScanner(fileHandler, customDeps.glob);
   const contentGenerator = new ContentGenerator(fileHandler);
-  const textDumper = new TextDumper(configLoader, repositoryScanner, contentGenerator, fileHandler);
+  const treeGenerator = new TreeGenerator();
+  const textDumper = new TextDumper(configLoader, repositoryScanner, contentGenerator, fileHandler, treeGenerator);
   const watcher = new Watcher(textDumper, customDeps.chokidar);
 
   return {

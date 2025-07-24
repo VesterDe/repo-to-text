@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from '@jest/globals';
+import { describe, test, expect, beforeEach } from 'vitest';
 import { TreeGenerator } from './TreeGenerator.js';
 
 describe('TreeGenerator', () => {
@@ -29,19 +29,9 @@ describe('TreeGenerator', () => {
       'src/types.ts',
       'src/classes/TreeGenerator.ts',
       'src/classes/TextDumper.ts',
-      'package.json'
+      'package.json',
     ];
-    const expected =
-      `Directory Tree:
-.
-├── package.json
-└── src
-    ├── classes
-    │   ├── TextDumper.ts
-    │   └── TreeGenerator.ts
-    ├── index.ts
-    └── types.ts
-`;
+    const expected = `Directory Tree:\n.\n├── package.json\n└── src\n    ├── classes\n    │   ├── TextDumper.ts\n    │   └── TreeGenerator.ts\n    ├── index.ts\n    └── types.ts\n`;
     const result = treeGenerator.generateTree(files);
     expect(result).toBe(expected);
   });
@@ -52,24 +42,11 @@ describe('TreeGenerator', () => {
       'src/a/deep/path/file2.ts',
       'src/b/other/file3.ts',
       'src/b/file4.ts',
-      'root.txt'
+      'root.txt',
     ];
-    const expected =
-      `Directory Tree:
-.
-├── root.txt
-└── src
-    ├── a
-    │   └── deep
-    │       └── path
-    │           ├── file1.ts
-    │           └── file2.ts
-    └── b
-        ├── file4.ts
-        └── other
-            └── file3.ts
-`;
+    const expected = `Directory Tree:\n.\n├── root.txt\n└── src\n    ├── a\n    │   └── deep\n    │       └── path\n    │           ├── file1.ts\n    │           └── file2.ts\n    └── b\n        ├── file4.ts\n        └── other\n            └── file3.ts\n`;
     const result = treeGenerator.generateTree(files);
     expect(result).toBe(expected);
   });
-}); 
+});
+ 

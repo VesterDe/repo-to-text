@@ -1,6 +1,6 @@
 import ignore from 'ignore';
 import type { GlobFunction } from '../types.js';
-import { FileHandler } from './FileHandler.js';
+import type { FileHandler } from './FileHandler.js';
 import { glob } from 'glob';
 
 export class RepositoryScanner {

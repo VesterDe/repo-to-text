@@ -1,21 +1,21 @@
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { vi, describe, test, expect, beforeEach, type Mocked } from 'vitest';
 import type { Stats } from 'fs';
 import { FileHandler } from './FileHandler.js';
 import type { FileSystem } from '../types.js';
 
-const mockFs = {
-  readFileSync: jest.fn().mockReturnValue(''),
-  writeFileSync: jest.fn(),
-  existsSync: jest.fn(),
-  statSync: jest.fn()
-} as jest.Mocked<FileSystem>;
+const mockFs: Mocked<FileSystem> = {
+  readFileSync: vi.fn(),
+  writeFileSync: vi.fn(),
+  existsSync: vi.fn(),
+  statSync: vi.fn(),
+};
 
 describe('FileHandler', () => {
   let fileHandler: FileHandler;
 
   beforeEach(() => {
+    vi.clearAllMocks();
     fileHandler = new FileHandler(mockFs);
-    jest.clearAllMocks();
   });
 
   test('should read file', () => {
@@ -39,12 +39,16 @@ describe('FileHandler', () => {
     expect(fileHandler.isFile('test.txt')).toBe(true);
   });
 
-  test('should handle directory check', () => {
-    mockFs.statSync.mockImplementation(() => {
-      const error: NodeJS.ErrnoException = new Error();
-      error.code = 'EISDIR';
-      throw error;
-    });
+  test('should return false for a directory', () => {
+    mockFs.statSync.mockReturnValue({ isFile: () => false } as Stats);
     expect(fileHandler.isFile('dir')).toBe(false);
   });
-}); 
+
+  test('should throw an error if statSync fails for reasons other than EISDIR', () => {
+    const error = new Error('Something went wrong');
+    mockFs.statSync.mockImplementation(() => {
+      throw error;
+    });
+    expect(() => fileHandler.isFile('error-path')).toThrow(error);
+  });
+});

@@ -1,77 +1,63 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { vi, describe, test, expect, beforeEach, afterEach, type SpyInstance } from 'vitest';
 import { Watcher } from './Watcher.js';
 import { TextDumper } from './TextDumper.js';
 import { FileHandler } from './FileHandler.js';
 import { ConfigLoader } from './ConfigLoader.js';
 import { RepositoryScanner } from './RepositoryScanner.js';
 import { ContentGenerator } from './ContentGenerator.js';
-import type { FileSystem, GlobFunction } from '../types.js';
+import { TreeGenerator } from './TreeGenerator.js';
+import type { FileSystem } from '../types.js';
+import chokidar from 'chokidar';
+import { glob } from 'glob';
 
-const mockFs = {
-  readFileSync: jest.fn().mockReturnValue(''),
-  writeFileSync: jest.fn(),
-  existsSync: jest.fn(),
-  statSync: jest.fn()
-} as jest.Mocked<FileSystem>;
-
-const mockGlob = jest.fn().mockImplementation(async () => []) as jest.MockedFunction<GlobFunction>;
-
-const mockChokidar = {
-  watch: jest.fn().mockReturnValue({
-    on: jest.fn().mockReturnThis()
-  }),
-  FSWatcher: jest.fn()
-};
+vi.mock('chokidar');
 
 describe('Watcher', () => {
   let watcher: Watcher;
   let mockTextDumper: TextDumper;
-  let mockFileHandler: FileHandler;
-  let mockConfigLoader: ConfigLoader;
-  let mockRepositoryScanner: RepositoryScanner;
-  let mockContentGenerator: ContentGenerator;
-  let loadConfigMock: jest.MockedFunction<ConfigLoader['loadConfig']>;
-  let generateTextDumpMock: jest.MockedFunction<TextDumper['generateTextDump']>;
+  let watchMock: SpyInstance;
+  const onMock = vi.fn();
 
   beforeEach(() => {
-    mockFileHandler = new FileHandler(mockFs);
-    mockConfigLoader = new ConfigLoader(mockFileHandler);
-    mockRepositoryScanner = new RepositoryScanner(mockFileHandler, mockGlob);
-    mockContentGenerator = new ContentGenerator(mockFileHandler);
-
+    const mockFs: FileSystem = {
+      readFileSync: vi.fn().mockReturnValue(''),
+      writeFileSync: vi.fn(),
+      existsSync: vi.fn(),
+      statSync: vi.fn(),
+    };
+    const mockFileHandler = new FileHandler(mockFs);
+    const mockConfigLoader = new ConfigLoader(mockFileHandler);
+    const mockRepositoryScanner = new RepositoryScanner(mockFileHandler, glob);
+    const mockContentGenerator = new ContentGenerator(mockFileHandler);
     mockTextDumper = new TextDumper(
       mockConfigLoader,
       mockRepositoryScanner,
       mockContentGenerator,
-      mockFileHandler
+      mockFileHandler,
+      new TreeGenerator()
     );
 
-    loadConfigMock = jest.fn(() => ({
-      include: ['**/*'],
-      exclude: ['node_modules/**'],
-      output: { path: 'output.txt' },
-      watch: { debounceMs: 300 }
-    })) as jest.MockedFunction<ConfigLoader['loadConfig']>;
-    generateTextDumpMock = jest.fn(async () => 'output.txt') as jest.MockedFunction<TextDumper['generateTextDump']>;
+    watchMock = vi.spyOn(chokidar, 'watch').mockReturnValue({
+      on: onMock,
+    } as any);
 
-    jest.spyOn(mockConfigLoader, 'loadConfig').mockImplementation(loadConfigMock);
-    jest.spyOn(mockTextDumper, 'generateTextDump').mockImplementation(generateTextDumpMock);
-
-    watcher = new Watcher(mockTextDumper, mockChokidar as any);
-    jest.useFakeTimers();
+    watcher = new Watcher(mockTextDumper, chokidar);
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   test('should setup file watching', async () => {
-    const options = { output: 'output.txt' };
-    const watchInstance = await watcher.watch(options);
+    vi.spyOn(mockTextDumper, 'generateTextDump').mockResolvedValue('output.txt');
+    onMock.mockReturnThis(); // Ensure 'on' is chainable
+    await watcher.watch({});
 
-    expect(mockChokidar.watch).toHaveBeenCalled();
-    expect((watchInstance as any).on).toHaveBeenCalledWith('add', expect.any(Function));
-    expect((watchInstance as any).on).toHaveBeenCalledWith('change', expect.any(Function));
-    expect((watchInstance as any).on).toHaveBeenCalledWith('unlink', expect.any(Function));
+    expect(watchMock).toHaveBeenCalled();
+    expect(onMock).toHaveBeenCalledWith('add', expect.any(Function));
+    expect(onMock).toHaveBeenCalledWith('change', expect.any(Function));
+    expect(onMock).toHaveBeenCalledWith('unlink', expect.any(Function));
   });
-}); 
+});

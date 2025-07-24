@@ -1,6 +1,6 @@
 import { join } from 'path';
 import type { Config } from '../types.js';
-import { FileHandler } from './FileHandler.js';
+import type { FileHandler } from './FileHandler.js';
 
 export const DEFAULT_CONFIG: Config = {
   include: ['**/*'],

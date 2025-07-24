@@ -1,44 +1,46 @@
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { vi, describe, test, expect, beforeEach, type MockInstance, type Mocked } from 'vitest';
 import { ContentGenerator } from './ContentGenerator.js';
 import { FileHandler } from './FileHandler.js';
 import type { FileSystem } from '../types.js';
 
 const mockFs = {
-  readFileSync: jest.fn().mockReturnValue(''),
-  writeFileSync: jest.fn(),
-  existsSync: jest.fn(),
-  statSync: jest.fn()
-} as jest.Mocked<FileSystem>;
+  readFileSync: vi.fn().mockReturnValue(''),
+  writeFileSync: vi.fn(),
+  existsSync: vi.fn(),
+  statSync: vi.fn()
+} as Mocked<FileSystem>;
 
 describe('ContentGenerator', () => {
   let generator: ContentGenerator;
-  let mockFileHandler: FileHandler;
-  let readFileMock: jest.MockedFunction<FileHandler['readFile']>;
-  let isFileMock: jest.MockedFunction<FileHandler['isFile']>;
+  let fh: FileHandler;
+
+  type ReadFile = FileHandler['readFile'];
+  type IsFile = FileHandler['isFile'];
+  let readFileSpy: MockInstance<ReadFile>;
+  let isFileSpy: MockInstance<IsFile>;
 
   beforeEach(() => {
-    mockFileHandler = new FileHandler(mockFs);
-    generator = new ContentGenerator(mockFileHandler);
-    readFileMock = jest.fn() as jest.MockedFunction<FileHandler['readFile']>;
-    isFileMock = jest.fn() as jest.MockedFunction<FileHandler['isFile']>;
-    jest.spyOn(mockFileHandler, 'readFile').mockImplementation(readFileMock);
-    jest.spyOn(mockFileHandler, 'isFile').mockImplementation(isFileMock);
+    fh = new FileHandler(mockFs);
+    generator = new ContentGenerator(fh);
+
+    readFileSpy = vi.spyOn(fh, 'readFile');
+    isFileSpy = vi.spyOn(fh, 'isFile');
   });
 
   test('should generate content for files', () => {
-    isFileMock.mockReturnValue(true);
-    readFileMock.mockReturnValue('file content');
+    isFileSpy.mockReturnValue(true);
+    readFileSpy.mockReturnValue('file content');
 
     const content = generator.generateContent(['file1.js', 'file2.js']);
     expect(content).toContain('FILE: file1.js');
     expect(content).toContain('file content');
-    expect(readFileMock).toHaveBeenCalledTimes(2);
+    expect(readFileSpy).toHaveBeenCalledTimes(2);
   });
 
   test('should skip non-files', () => {
-    isFileMock.mockReturnValue(false);
+    isFileSpy.mockReturnValue(false);
 
     generator.generateContent(['dir']);
-    expect(readFileMock).not.toHaveBeenCalled();
+    expect(readFileSpy).not.toHaveBeenCalled();
   });
 }); 
